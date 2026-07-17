@@ -19,7 +19,7 @@ fn main() -> Result<(), color_eyre::eyre::Report> {
 
     let backend = ratatui::backend::CrosstermBackend::new(stderr());
     let terminal = Terminal::new(backend)?;
-    let event_handler = EventHandler::new(500);
+    let event_handler = EventHandler::new(100);
     let tui = Tui::new(terminal);
 
     let mut game_loop = GameLoop::new(game, event_handler, tui);
