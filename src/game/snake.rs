@@ -38,4 +38,19 @@ impl Snake {
     pub fn default_snake() -> Self {
         Self::new((0,0), '@', '-', '*')
     }
+    pub(crate) fn get_head_pos(&self) -> (i32, i32) {
+        match self.snake_body.front(){
+            Some(SnakeParts::Head(_, pos)) => *pos,
+            _ => panic!("error: first must be head!"),
+        }
+    }
+    pub(crate) fn iter_parts(&self) -> impl Iterator<Item = (char, (i32, i32))> + '_ {
+        self.snake_body.iter().map(|part|{
+            match part {
+                SnakeParts::Head(c, pos) => (*c, *pos),
+                SnakeParts::Body(c, pos) => (*c, *pos),
+                SnakeParts::Tail(c, pos) => (*c, *pos),
+            }
+        })
+    }
 }
