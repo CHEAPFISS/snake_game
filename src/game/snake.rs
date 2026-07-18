@@ -1,4 +1,6 @@
-use std::collections::VecDeque;
+use std::{cell, collections::VecDeque};
+
+use crate::game::snake::SnakeDirection::Right;
 
 pub struct Snake {
     pub(crate) snake_body: VecDeque<SnakeParts>,
@@ -6,7 +8,7 @@ pub struct Snake {
     snake_head_symbol: char,
     snake_body_symbol: char,
     snake_tail_symbol: char,
-    pub(crate) direction: SnakeDirection,
+    direction: SnakeDirection,
 }
 
 pub enum SnakeParts {
@@ -15,6 +17,7 @@ pub enum SnakeParts {
     Tail(char, (i32, i32)),
 }
 
+#[derive(Clone, Copy,PartialEq, Eq)]
 pub(crate) enum SnakeDirection {
     Left,
     Right,
@@ -52,5 +55,37 @@ impl Snake {
                 SnakeParts::Tail(c, pos) => (*c, *pos),
             }
         })
+    }
+    fn get_direction(&self) -> SnakeDirection {
+        self.direction
+    }
+    pub(crate) fn opposite_direction(&self, direction: SnakeDirection) -> Option<SnakeDirection> {
+        match direction
+        {
+            SnakeDirection::Left => if direction != SnakeDirection::Right{
+                Some(SnakeDirection::Left)
+            }
+            else{
+                None
+            },
+            SnakeDirection::Right => if direction != SnakeDirection::Left{
+                Some(SnakeDirection::Right)
+            }
+            else{
+                None
+            },
+            SnakeDirection::Up => if direction != SnakeDirection::Down{
+                Some(SnakeDirection::Up)
+            }
+            else{
+                None
+            },
+            SnakeDirection::Down => if direction != SnakeDirection::Up{
+                Some(SnakeDirection::Down)
+            }
+            else{
+                None
+            },
+        }
     }
 }

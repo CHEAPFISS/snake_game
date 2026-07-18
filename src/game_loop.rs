@@ -1,5 +1,6 @@
+use crate::Snake;
 use crate::event::{self, Event as EventType, EventHandler};
-use crate::game::Game;
+use crate::game::{Game, snake::SnakeDirection};
 use crate::tui::Tui;
 use color_eyre::eyre::Result;
 use crossterm::event::KeyCode;
@@ -39,13 +40,32 @@ impl GameLoop {
         self.tui.exit()?;
         Ok(())
     }
+
     fn update(&mut self, event: KeyEvent) -> Result<()> {
+        let snake = self.game.snake;
+        let mut snake_direction = snake.direction;
         match event.code {
             KeyCode::Char('q') | KeyCode::Esc => self.running = false,
-            KeyCode::Left => todo!(),
-            KeyCode::Right => todo!(),
-            KeyCode::Up => todo!(),
-            KeyCode::Down => todo!(),
+            KeyCode::Left =>{
+                if !snake.opposite_direction(SnakeDirection::Left) {
+                    snake_direction = SnakeDirection::Left;
+                }
+            },
+            KeyCode::Right => {
+                if !snake.opposite_direction(SnakeDirection::Right) {
+                    snake_direction = SnakeDirection::Right;
+                }
+            },
+            KeyCode::Up => {
+                if !snake.opposite_direction(SnakeDirection::Up) {
+                    snake_direction = SnakeDirection::Up;
+                }
+            },
+            KeyCode::Down => {
+                if !snake.opposite_direction(SnakeDirection::Down) {
+                    snake_direction = SnakeDirection::Down;
+                }
+            },
             _ => {}
         }
         Ok(())
