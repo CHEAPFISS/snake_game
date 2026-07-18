@@ -1,6 +1,4 @@
 use std::{collections::{HashMap, VecDeque}};
-use crate::game;
-
 
 pub struct Snake {
     pub(crate) snake_body: VecDeque<SnakeParts>,
@@ -76,7 +74,4 @@ impl Snake {
             self.direction = direction;
         }
     }
-}
-impl SnakeParts {
-
 }
