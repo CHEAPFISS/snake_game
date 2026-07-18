@@ -5,6 +5,7 @@ use crate::tui::Tui;
 use color_eyre::eyre::Result;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
+use ratatui::widgets::HighlightSpacing::WhenSelected;
 
 
 
@@ -42,30 +43,12 @@ impl GameLoop {
     }
 
     fn update(&mut self, event: KeyEvent) -> Result<()> {
-        let snake = self.game.snake;
-        let mut snake_direction = snake.direction;
         match event.code {
             KeyCode::Char('q') | KeyCode::Esc => self.running = false,
-            KeyCode::Left =>{
-                if !snake.opposite_direction(SnakeDirection::Left) {
-                    snake_direction = SnakeDirection::Left;
-                }
-            },
-            KeyCode::Right => {
-                if !snake.opposite_direction(SnakeDirection::Right) {
-                    snake_direction = SnakeDirection::Right;
-                }
-            },
-            KeyCode::Up => {
-                if !snake.opposite_direction(SnakeDirection::Up) {
-                    snake_direction = SnakeDirection::Up;
-                }
-            },
-            KeyCode::Down => {
-                if !snake.opposite_direction(SnakeDirection::Down) {
-                    snake_direction = SnakeDirection::Down;
-                }
-            },
+            KeyCode::Left => self.game.snake.change_direction(SnakeDirection::Left),
+            KeyCode::Right => self.game.snake.change_direction(SnakeDirection::Right),
+            KeyCode::Up => self.game.snake.change_direction(SnakeDirection::Up),
+            KeyCode::Down => self.game.snake.change_direction(SnakeDirection::Down),
             _ => {}
         }
         Ok(())

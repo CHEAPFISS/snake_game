@@ -1,7 +1,5 @@
 use std::{cell, collections::VecDeque};
 
-use crate::game::snake::SnakeDirection::Right;
-
 pub struct Snake {
     pub(crate) snake_body: VecDeque<SnakeParts>,
 
@@ -56,36 +54,19 @@ impl Snake {
             }
         })
     }
-    fn get_direction(&self) -> SnakeDirection {
-        self.direction
-    }
-    pub(crate) fn opposite_direction(&self, direction: SnakeDirection) -> Option<SnakeDirection> {
+    ///Возвращает `true`, если направление `direction` противоположно текущему направлению.
+    fn opposite_direction(&self, direction: SnakeDirection) -> bool {
         match direction
         {
-            SnakeDirection::Left => if direction != SnakeDirection::Right{
-                Some(SnakeDirection::Left)
-            }
-            else{
-                None
-            },
-            SnakeDirection::Right => if direction != SnakeDirection::Left{
-                Some(SnakeDirection::Right)
-            }
-            else{
-                None
-            },
-            SnakeDirection::Up => if direction != SnakeDirection::Down{
-                Some(SnakeDirection::Up)
-            }
-            else{
-                None
-            },
-            SnakeDirection::Down => if direction != SnakeDirection::Up{
-                Some(SnakeDirection::Down)
-            }
-            else{
-                None
-            },
+            SnakeDirection::Left => self.direction == SnakeDirection::Right,
+            SnakeDirection::Right => self.direction == SnakeDirection::Left,
+            SnakeDirection::Up => self.direction == SnakeDirection::Down,
+            SnakeDirection::Down => self.direction == SnakeDirection::Up,
+        }
+    }
+    pub(crate) fn change_direction(&mut self, direction: SnakeDirection) {
+        if !self.opposite_direction(direction){
+            self.direction = direction;
         }
     }
 }
