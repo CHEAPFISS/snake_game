@@ -5,6 +5,8 @@ use color_eyre::eyre::Result;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
 
+
+
 pub struct GameLoop {
     game: Game,
     running: bool,
@@ -13,6 +15,8 @@ pub struct GameLoop {
 }
 
 impl GameLoop {
+    /// Main struct for game loop what contains all what need for 
+    /// clean work
     pub fn new(game: Game, event_handler: EventHandler, tui: Tui) -> Self {
         Self {
             game,

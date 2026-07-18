@@ -1,4 +1,4 @@
-mod snake;
+pub mod snake;
 
 use snake::Snake;
 #[derive(Debug)]
@@ -9,16 +9,11 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn new(
-        name: String,
-        area_size: (u16, u16),
-        snake_head_position: (i32, i32),
-        snake_head_symbol: char,
-    ) -> Self {
+    pub fn new(snake: Snake, name: String, area_size: (u16, u16)) -> Self {
         Self {
             name,
             area_size,
-            snake: Snake::new(snake_head_position, snake_head_symbol),
+            snake,
         }
     }
 }

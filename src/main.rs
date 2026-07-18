@@ -1,9 +1,6 @@
 use color_eyre::eyre::Result;
-use snake_game::{EventHandler, Game, GameLoop, Tui};
-use std::{
-    io::{Write, stderr, stdout},
-    rc::Rc,
-};
+use snake_game::{EventHandler, Game, GameLoop, Snake, Tui};
+use std::io::{Write, stderr};
 
 use ratatui::Terminal;
 
@@ -11,10 +8,9 @@ fn main() -> Result<(), color_eyre::eyre::Report> {
     color_eyre::install()?;
 
     let game = Game::new(
+        Snake::default(),
         String::from("Snake Game"),
         crossterm::terminal::size().expect("Error: Failed to get terminal size"),
-        (0, 0),
-        '@',
     );
 
     let backend = ratatui::backend::CrosstermBackend::new(stderr());
