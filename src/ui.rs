@@ -1,5 +1,4 @@
 use crate::Game;
-use std::rc::Rc;
 
 use ratatui::{prelude::*, text::ToLine, widgets::{Block, BorderType}};
 

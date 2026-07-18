@@ -1,4 +1,4 @@
-use super::snake::{Snake, SnakeDirection};
+use super::snake::Snake;
 use ratatui::prelude::{Rect, Buffer, Widget};
 
 impl Widget for &Snake {

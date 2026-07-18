@@ -1,10 +1,10 @@
 use std::{collections::{HashMap, VecDeque}};
-use crate::game;
+
 
 
 pub struct Snake {
     pub(crate) snake_body: VecDeque<SnakeParts>,
-    symbols: HashMap<SnakeSymbols, char>,
+    _symbols: HashMap<SnakeSymbols, char>, //TODO
     direction: SnakeDirection,
 }
 
@@ -39,14 +39,14 @@ impl Snake {
 
         Self {
             snake_body,
-            symbols,
+            _symbols: symbols, //TODO
             direction: SnakeDirection::Right,
         }
     }
     pub fn default_snake() -> Self {
         Self::new((0,0), '@', '-', '*')
     }
-    pub(crate) fn get_head_pos(&self) -> (i32, i32) {
+    pub(crate) fn _get_head_pos(&self) -> (i32, i32) { //TODO
         match self.snake_body.front(){
             Some(SnakeParts::Head(_, pos)) => *pos,
             _ => panic!("error: first must be head!"),

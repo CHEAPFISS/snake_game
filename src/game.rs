@@ -3,13 +3,13 @@ pub mod render;
 pub mod info;
 
 use snake::Snake;
-use ratatui::{macros::ratatui_core::terminal, prelude::*};
+use ratatui::prelude::*;
 
 use crate::SnakeParts;
 
 pub struct Game {
     pub game_area: Rect,
-    pub(crate) score: i32,
+    pub(crate) _score: i32,//TODO
     pub name: String,
     pub snake: Snake,
 }
@@ -32,7 +32,7 @@ impl Game {
 
         Self {
             game_area: chunks[1],
-            score: 0,
+            _score: 0,//TODO
             name,
             snake,
         }
