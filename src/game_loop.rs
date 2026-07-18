@@ -1,11 +1,10 @@
-use crate::Snake;
 use crate::event::{self, Event as EventType, EventHandler};
 use crate::game::{Game, snake::SnakeDirection};
 use crate::tui::Tui;
 use color_eyre::eyre::Result;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
-use ratatui::widgets::HighlightSpacing::WhenSelected;
+
 
 
 

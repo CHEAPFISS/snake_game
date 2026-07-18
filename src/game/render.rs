@@ -1,8 +1,8 @@
-use super::snake::Snake;
+use super::snake::{Snake, SnakeDirection};
 use ratatui::prelude::{Rect, Buffer, Widget};
 
 impl Widget for &Snake {
-    fn render(self, area: ratatui::prelude::Rect, buf: &mut ratatui::prelude::Buffer) {
+    fn render(self, area: Rect, buf: &mut Buffer) {
         for (symbol, (x,y)) in self.iter_parts() {
             if x<0 || y< 0{
                 continue;
@@ -17,4 +17,3 @@ impl Widget for &Snake {
         }
     }
 }
-
