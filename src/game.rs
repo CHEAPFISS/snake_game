@@ -1,5 +1,6 @@
 pub mod snake;
 pub mod render;
+pub mod info;
 
 use snake::Snake;
 
