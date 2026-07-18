@@ -1,9 +1,12 @@
 use crate::event::{self, Event as EventType, EventHandler};
-use crate::game::Game;
+use crate::game::{Game, snake::SnakeDirection};
 use crate::tui::Tui;
 use color_eyre::eyre::Result;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
+
+
+
 
 pub struct GameLoop {
     game: Game,
@@ -13,6 +16,8 @@ pub struct GameLoop {
 }
 
 impl GameLoop {
+    /// Main struct for game loop what contains all what need for
+    /// clean work
     pub fn new(game: Game, event_handler: EventHandler, tui: Tui) -> Self {
         Self {
             game,
@@ -35,13 +40,14 @@ impl GameLoop {
         self.tui.exit()?;
         Ok(())
     }
+
     fn update(&mut self, event: KeyEvent) -> Result<()> {
         match event.code {
             KeyCode::Char('q') | KeyCode::Esc => self.running = false,
-            KeyCode::Left => todo!(),
-            KeyCode::Right => todo!(),
-            KeyCode::Up => todo!(),
-            KeyCode::Down => todo!(),
+            KeyCode::Left => self.game.snake.change_direction(SnakeDirection::Left),
+            KeyCode::Right => self.game.snake.change_direction(SnakeDirection::Right),
+            KeyCode::Up => self.game.snake.change_direction(SnakeDirection::Up),
+            KeyCode::Down => self.game.snake.change_direction(SnakeDirection::Down),
             _ => {}
         }
         Ok(())

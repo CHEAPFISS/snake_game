@@ -1,6 +1,4 @@
 use std::{
-    cell::RefCell,
-    rc::Rc,
     sync::mpsc,
     thread,
     time::{Duration, Instant},
@@ -11,6 +9,8 @@ use ratatui::crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEv
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Event {
+    /// Apple event
+    Apple,
     /// Terminal tick
     Tick,
     /// Mouse event
@@ -22,11 +22,13 @@ pub enum Event {
 }
 #[derive(Debug)]
 pub struct EventHandler {
+    #[allow(dead_code)]
     /// Event sender channel
     sender: mpsc::Sender<Event>,
     /// Event receiver
     receiver: mpsc::Receiver<Event>,
     ///Event Handler thread
+    #[allow(dead_code)]
     handler: thread::JoinHandle<()>,
 }
 

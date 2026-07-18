@@ -1,24 +1,40 @@
-mod snake;
+pub mod snake;
+pub mod render;
+pub mod info;
 
 use snake::Snake;
-#[derive(Debug)]
+use ratatui::{macros::ratatui_core::terminal, prelude::*};
+
+use crate::SnakeParts;
+
 pub struct Game {
+    pub game_area: Rect,
+    pub(crate) score: i32,
     pub name: String,
-    pub area_size: (u16, u16),
     pub snake: Snake,
 }
 
 impl Game {
-    pub fn new(
-        name: String,
-        area_size: (u16, u16),
-        snake_head_position: (i32, i32),
-        snake_head_symbol: char,
-    ) -> Self {
+    pub fn new(terminal_size: Size, mut snake: Snake, name: String) -> Self {
+        let chunks = Layout::default()
+            .direction(Direction::Vertical)
+            .constraints([
+                Constraint::Min(5),
+                Constraint::Percentage(100),
+                Constraint::Min(5),
+            ])
+            .split(Rect::from(terminal_size));
+
+        if let Some(SnakeParts::Head(_, coords)) = snake.snake_body.front_mut(){
+            coords.0 = chunks[1].width as i32 / 2;
+            coords.1 = chunks[1].height as i32 / 2;
+        }
+
         Self {
+            game_area: chunks[1],
+            score: 0,
             name,
-            area_size,
-            snake: Snake::new(snake_head_position, snake_head_symbol),
+            snake,
         }
     }
 }
