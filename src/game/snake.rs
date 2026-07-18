@@ -1,14 +1,17 @@
-use std::{cell, collections::VecDeque};
+use std::{collections::{HashMap, VecDeque}};
 
 pub struct Snake {
     pub(crate) snake_body: VecDeque<SnakeParts>,
-
-    snake_head_symbol: char,
-    snake_body_symbol: char,
-    snake_tail_symbol: char,
+    symbols: HashMap<SnakeSymbols, char>,
     direction: SnakeDirection,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+pub enum SnakeSymbols{
+    Head,
+    Body,
+    Tail,
+}
 pub enum SnakeParts {
     Head(char, (i32, i32)),
     Body(char, (i32, i32)),
@@ -27,12 +30,14 @@ impl Snake {
     pub(crate) fn new(snake_start_position: (i32, i32), snake_head_symbol: char, snake_body_symbol: char, snake_tail_symbol: char) -> Self {
         let mut snake_body = VecDeque::new();
         snake_body.push_front(SnakeParts::Head(snake_head_symbol, snake_start_position));
+        let mut symbols = HashMap::new();
+        symbols.insert(SnakeSymbols::Head, snake_head_symbol);
+        symbols.insert(SnakeSymbols::Body, snake_body_symbol);
+        symbols.insert(SnakeSymbols::Tail, snake_tail_symbol);
 
         Self {
             snake_body,
-            snake_head_symbol,
-            snake_body_symbol,
-            snake_tail_symbol,
+            symbols,
             direction: SnakeDirection::Right,
         }
     }
