@@ -20,11 +20,13 @@ pub enum Event {
 }
 #[derive(Debug)]
 pub struct EventHandler {
+    #[allow(dead_code)]
     /// Event sender channel
     sender: mpsc::Sender<Event>,
     /// Event receiver
     receiver: mpsc::Receiver<Event>,
     ///Event Handler thread
+    #[allow(dead_code)]
     handler: thread::JoinHandle<()>,
 }
 

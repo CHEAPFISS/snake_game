@@ -8,7 +8,7 @@ fn main() -> Result<(), color_eyre::eyre::Report> {
     color_eyre::install()?;
 
     let game = Game::new(
-        Snake::default(),
+        Snake::default_snake(),
         String::from("Snake Game"),
         crossterm::terminal::size().expect("Error: Failed to get terminal size"),
     );

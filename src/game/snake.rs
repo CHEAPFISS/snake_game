@@ -15,7 +15,7 @@ pub enum SnakeParts {
     Tail(char, (i32, i32)),
 }
 
-pub (crate) enum SnakeDirection {
+pub(crate) enum SnakeDirection {
     Left,
     Right,
     Up,
@@ -35,7 +35,7 @@ impl Snake {
             direction: SnakeDirection::Right,
         }
     }
-    pub fn default() -> Self {
+    pub fn default_snake() -> Self {
         Self::new((0,0), '@', '-', '*')
     }
 }

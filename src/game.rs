@@ -1,7 +1,7 @@
 pub mod snake;
 
 use snake::Snake;
-#[derive(Debug)]
+
 pub struct Game {
     pub name: String,
     pub area_size: (u16, u16),
