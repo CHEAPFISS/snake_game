@@ -1,5 +1,7 @@
 [package]
-name = "snake_game"
+name = "snake_game_teaching"
+description = "Мой тестовый проектик для обучения библиотекам"
+license = "MIT"
 version = "0.1.0"
 edition = "2024"
 

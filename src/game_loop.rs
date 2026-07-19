@@ -2,8 +2,6 @@
 //!
 //! Имеет в себе функции для запуска и создание игрового цикла.
 
-
-
 use crate::event::{Event as EventType, EventHandler};
 use crate::game::{Game, snake::SnakeDirection};
 use crate::tui::Tui;

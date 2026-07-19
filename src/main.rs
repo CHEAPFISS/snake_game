@@ -1,5 +1,5 @@
 use color_eyre::eyre::Result;
-use snake_game::{EventHandler, Game, GameLoop, Snake, Tui};
+use snake_game_teaching::{EventHandler, Game, GameLoop, Snake, Tui};
 use std::io::stderr;
 
 use ratatui::Terminal;

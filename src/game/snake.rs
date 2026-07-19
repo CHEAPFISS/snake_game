@@ -5,12 +5,12 @@
 //! # Examples
 //!
 //! ```
-//! # use snake_game::prelude::*;
+//! # use snake_game_teaching::prelude::*;
 //! let snake = Snake::default_snake();
 //! ```
 //! или же с заданными символами
 //! ```
-//! # use snake_game::prelude::*;
+//! # use snake_game_teaching::prelude::*;
 //! let snake = Snake::new('*', 'o', 'o');
 //! ```
 
