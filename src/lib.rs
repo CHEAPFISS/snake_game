@@ -1,11 +1,9 @@
-pub mod event;
-pub mod game;
-pub mod game_loop;
-pub mod tui;
-pub mod ui;
+mod event;
+mod game;
+mod game_loop;
+mod tui;
+mod ui;
 
-pub use game::snake::Snake;
-pub use event::EventHandler;
-pub use game::Game;
-pub use game_loop::GameLoop;
-pub use tui::Tui;
+pub mod prelude;
+
+pub use prelude::*;

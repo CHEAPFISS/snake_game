@@ -1,6 +1,6 @@
 //! # UI (User Interface) для игры в змейку.
 
-use crate::Game;
+use crate::prelude::Game;
 
 use ratatui::{prelude::*, text::ToLine, widgets::{Block, BorderType}};
 

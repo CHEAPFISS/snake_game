@@ -4,9 +4,9 @@
 //!
 //! Требуется ТОЛЬКО для создания, хранения и чтения данных игры.
 
-pub mod snake;
-pub mod render;
-pub mod info;
+pub(crate) mod snake;
+pub(crate) mod render;
+pub(crate) mod info;
 
 use snake::Snake;
 use ratatui::prelude::*;
