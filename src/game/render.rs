@@ -1,3 +1,6 @@
+//! # Модуль для реализации trait'а [`Widget`] для модулей от модуля `game`
+
+
 use super::snake::Snake;
 use ratatui::prelude::Widget;
 
