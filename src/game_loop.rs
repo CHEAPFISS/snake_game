@@ -5,7 +5,7 @@
 //! Ниже приведен пример для запуска игры:
 //!
 //! # Example
-//! ```
+//! ```rust, no_run
 //! use color_eyre::eyre::Result;
 //! use snake_game::{EventHandler, Game, GameLoop, Snake, Tui};
 //! use std::io::stderr;
@@ -29,7 +29,7 @@
 //!     let tui = Tui::new(terminal);
 //!
 //!     let mut game_loop = GameLoop::new(game, event_handler, tui);
-//!     // game_loop.run()?; Раскомментировать для того, чтоб запустить игровой цикл.
+//!     game_loop.run()?;
 //!     Ok(())
 //! }
 //! ```
