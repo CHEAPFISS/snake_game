@@ -5,7 +5,7 @@
 //! # Examples
 //!
 //! ```
-//! # use snake_game::game::snake::Snake;
+//! # use snake_game::prelude::*;
 //! let snake = Snake::default_snake();
 //! ```
 //! или же с заданными символами
