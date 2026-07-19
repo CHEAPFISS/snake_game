@@ -10,7 +10,7 @@
 //! ```
 //! или же с заданными символами
 //! ```
-//! # use snake_game::game::snake::Snake;
+//! # use snake_game::prelude::*;
 //! let snake = Snake::new('*', 'o', 'o');
 //! ```
 
