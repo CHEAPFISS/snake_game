@@ -1,9 +1,11 @@
+//! # UI (User Interface) для игры в змейку.
+
 use crate::Game;
 
 use ratatui::{prelude::*, text::ToLine, widgets::{Block, BorderType}};
 
 
-pub fn render(game: &mut Game, frame: &mut Frame) {
+pub(crate) fn render(game: &mut Game, frame: &mut Frame) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
