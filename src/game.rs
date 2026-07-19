@@ -3,7 +3,7 @@ pub mod render;
 pub mod info;
 
 use snake::Snake;
-use ratatui::{macros::ratatui_core::terminal, prelude::*};
+use ratatui::prelude::*;
 
 use crate::SnakeParts;
 

@@ -1,9 +1,8 @@
 mod score;
 
 use crate::game::snake::SnakeDirection;
-use score::Score;
 
-struct Info{
+struct _Info{ //TODO
     score: i32,
     direction: SnakeDirection,
 }

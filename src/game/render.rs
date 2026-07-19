@@ -1,5 +1,5 @@
 use super::snake::Snake;
-use ratatui::prelude::{Rect, Buffer, Widget};
+use ratatui::prelude::Widget;
 
 impl Widget for &Snake {
     fn render(self, area: ratatui::prelude::Rect, buf: &mut ratatui::prelude::Buffer) {
@@ -17,4 +17,3 @@ impl Widget for &Snake {
         }
     }
 }
-

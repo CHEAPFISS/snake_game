@@ -2,7 +2,7 @@ use std::{collections::{HashMap, VecDeque}};
 
 pub struct Snake {
     pub(crate) snake_body: VecDeque<SnakeParts>,
-    symbols: HashMap<SnakeSymbols, char>,
+    _symbols: HashMap<SnakeSymbols, char>, //TODO
     direction: SnakeDirection,
 }
 
@@ -30,21 +30,21 @@ impl Snake {
     pub(crate) fn new(snake_start_position: (i32, i32), snake_head_symbol: char, snake_body_symbol: char, snake_tail_symbol: char) -> Self {
         let mut snake_body = VecDeque::new();
         snake_body.push_front(SnakeParts::Head(snake_head_symbol, snake_start_position));
-        let mut symbols = HashMap::new();
-        symbols.insert(SnakeSymbols::Head, snake_head_symbol);
-        symbols.insert(SnakeSymbols::Body, snake_body_symbol);
-        symbols.insert(SnakeSymbols::Tail, snake_tail_symbol);
+        let mut _symbols = HashMap::new();
+        _symbols.insert(SnakeSymbols::Head, snake_head_symbol);
+        _symbols.insert(SnakeSymbols::Body, snake_body_symbol);
+        _symbols.insert(SnakeSymbols::Tail, snake_tail_symbol);
 
         Self {
             snake_body,
-            symbols,
+            _symbols,
             direction: SnakeDirection::Right,
         }
     }
     pub fn default_snake() -> Self {
         Self::new((0,0), '@', '-', '*')
     }
-    pub(crate) fn get_head_pos(&self) -> (i32, i32) {
+    pub(crate) fn _get_head_pos(&self) -> (i32, i32) { //TODO
         match self.snake_body.front(){
             Some(SnakeParts::Head(_, pos)) => *pos,
             _ => panic!("error: first must be head!"),
