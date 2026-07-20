@@ -68,8 +68,8 @@ impl Game {
     }
     pub fn snake_death(&mut self) {
         let (x, y) = self.snake.get_head_pos();
-        if !(0..self.game_area.width as i32).contains(&x) ||
-        !(0..self.game_area.height as i32).contains(&y) {
+        if !(1..(self.game_area.width - 1) as i32).contains(&x) ||
+        !(1..(self.game_area.height - 1) as i32).contains(&y) {
             self.game_state = GameState::GameOver;
         }
     }

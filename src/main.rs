@@ -19,7 +19,7 @@ fn main() -> Result<(), color_eyre::eyre::Report> {
     );
 
 
-    let event_handler = EventHandler::new(100);
+    let event_handler = EventHandler::new(200);
     let tui = Tui::new(terminal);
 
     let mut game_loop = GameLoop::new(game, event_handler, tui);
