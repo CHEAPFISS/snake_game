@@ -10,7 +10,7 @@ pub(crate) mod info;
 
 use snake::Snake;
 use ratatui::prelude::*;
-
+use crate::ui;
 use snake::SnakeParts;
 
 
@@ -40,14 +40,7 @@ impl Game {
     ///
     /// Новый экземпляр [`Game`].
     pub fn new(terminal_size: Size, mut snake: Snake, name: String) -> Self {
-        let chunks = Layout::default()
-            .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Min(5),
-                Constraint::Percentage(100),
-                Constraint::Min(5),
-            ])
-            .split(Rect::from(terminal_size));
+        let chunks = ui::get_chunks(Rect::from(terminal_size));
 
         if let Some(SnakeParts::Head(x, y)) = snake.snake_body.front_mut() {
             *x = chunks[1].width as i32 / 2;
@@ -60,5 +53,8 @@ impl Game {
             name,
             snake,
         }
+    }
+    pub(crate) fn resize_game_area(&mut self, ui_game_area: Rect) {
+        self.game_area = ui_game_area;
     }
 }

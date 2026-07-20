@@ -8,6 +8,8 @@ use crate::tui::Tui;
 use color_eyre::eyre::Result;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
+use ratatui::layout::{Rect, Size};
+use crate::ui;
 
 /// Структура имеющая в себе все что нужно для управления игровым циклом.
 pub struct GameLoop {
@@ -38,6 +40,10 @@ impl GameLoop {
             match self.event_handler.next()?{
                 EventType::Key(e) => self.input_handler(e)?,
                 EventType::Tick => self.update()?,
+                EventType::Resize(w, h) =>{
+                    let chunks = ui::get_chunks(Rect::from(Size::new(w, h)));
+                    self.game.resize_game_area(chunks[1]);
+                }
                 _ => {}
             }
         }
