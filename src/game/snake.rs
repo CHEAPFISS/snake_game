@@ -19,8 +19,15 @@ use std::{collections::{HashMap, VecDeque}};
 /// Структура [`Snake`] представляет собой змейку в игре.
 pub struct Snake {
     pub(crate) snake_body: VecDeque<SnakeParts>,
-    _symbols: HashMap<SnakeSymbols, char>, //TODO
-    direction: SnakeDirection,
+    pub(crate) symbols: HashMap<SnakeSymbols, char>, //TODO
+    direction: Hvdir,
+}
+
+/// Хранит направление движения змейки как горизонтальное или вертикальное направление.
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub(crate) enum Hvdir {
+    Horizontal(i8),
+    Vertical(i8),
 }
 /// Хранит перечесление для ключей в HashMap
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
@@ -31,9 +38,9 @@ pub(crate) enum SnakeSymbols {
 }
 /// Хранит перечесления для хранения частей тела в VecDeque<T>
 pub(crate) enum SnakeParts {
-    Head(char, (i32, i32)),
-    _Body(char, (i32, i32)),
-    _Tail(char, (i32, i32)),
+    Head(i32, i32),
+    _Body(i32, i32),
+    _Tail(i32, i32),
 }
 
 /// Хранит перечесления определения направления движения змейки
@@ -49,36 +56,56 @@ impl Snake {
     /// Создает новый экземпляр змейки с заданными символами головы, тела и хвоста. Ставит напрвление `Right`.
     pub fn new(snake_head_symbol: char, snake_body_symbol: char, snake_tail_symbol: char) -> Self {
         let mut snake_body = VecDeque::new();
-        snake_body.push_front(SnakeParts::Head(snake_head_symbol, (0,0)));
-        let mut _symbols = HashMap::new();
-        _symbols.insert(SnakeSymbols::Head, snake_head_symbol);
-        _symbols.insert(SnakeSymbols::Body, snake_body_symbol);
-        _symbols.insert(SnakeSymbols::Tail, snake_tail_symbol);
+        snake_body.push_front(SnakeParts::Head(0,0));
+        let mut symbols = HashMap::new();
+        symbols.insert(SnakeSymbols::Head, snake_head_symbol);
+        symbols.insert(SnakeSymbols::Body, snake_body_symbol);
+        symbols.insert(SnakeSymbols::Tail, snake_tail_symbol);
 
         Self {
             snake_body,
-            _symbols,
-            direction: SnakeDirection::Right,
+            symbols,
+            direction: Hvdir::Horizontal(1),
         }
     }
+
+    pub(crate) fn move_snake(&mut self){
+        for part in &mut self.snake_body.iter_mut(){
+            match part{
+                SnakeParts::Head(x, y) => {
+                    if let Hvdir::Horizontal(v) = self.direction {
+                        *x += v as i32;
+                    }
+                    else if let Hvdir::Vertical(v) = self.direction {
+                        *y += v as i32;
+                    }
+                }
+                SnakeParts::_Body(_x, _y) | SnakeParts::_Tail(_x, _y) => {
+
+                }
+            }
+        }
+
+    }
+
     /// Возвращает новый экземпляр змейки с символами по умолчанию ('@', '-', '*').
     pub fn default_snake() -> Self {
         Self::new('@', '-', '*')
     }
     /// Возвращает позицию головы змейки.
-    pub(crate) fn _get_head_pos(&self) -> (i32, i32) { //TODO
+    pub(crate) fn _get_head_pos(&self) -> (i32, i32) {
         match self.snake_body.front(){
-            Some(SnakeParts::Head(_, pos)) => *pos,
+            Some(SnakeParts::Head(x, y)) => (*x, *y),
             _ => panic!("error: first must be head!"),
         }
     }
 
-    pub(crate) fn iter_parts(&self) -> impl Iterator<Item = (char, (i32, i32))> + '_ {
+    pub(crate) fn iter_parts(&self) -> impl Iterator<Item = (SnakeSymbols, (i32, i32))> + '_ {
         self.snake_body.iter().map(|part|{
             match part {
-                SnakeParts::Head(c, pos) => (*c, *pos),
-                SnakeParts::_Body(c, pos) => (*c, *pos),
-                SnakeParts::_Tail(c, pos) => (*c, *pos),
+                SnakeParts::Head(x, y) => (SnakeSymbols::Head, (*x, *y)),
+                SnakeParts::_Body(x, y) => (SnakeSymbols::Body, (*x, *y)),
+                SnakeParts::_Tail(x, y) => (SnakeSymbols::Tail, (*x, *y)),
             }
         })
     }
@@ -86,16 +113,28 @@ impl Snake {
     fn opposite_direction(&self, direction: SnakeDirection) -> bool {
         match direction
         {
-            SnakeDirection::Left => self.direction == SnakeDirection::Right,
-            SnakeDirection::Right => self.direction == SnakeDirection::Left,
-            SnakeDirection::Up => self.direction == SnakeDirection::Down,
-            SnakeDirection::Down => self.direction == SnakeDirection::Up,
+            SnakeDirection::Left => self.direction == Hvdir::Horizontal(1),
+            SnakeDirection::Right => self.direction == Hvdir::Horizontal(-1),
+            SnakeDirection::Up => self.direction == Hvdir::Vertical(1),
+            SnakeDirection::Down => self.direction == Hvdir::Vertical(-1),
         }
     }
     /// Изменяет направление змейки на заданное [`SnakeDirection`], если оно не противоположно текущему.
     pub(crate) fn change_direction(&mut self, direction: SnakeDirection) {
-        if !self.opposite_direction(direction){
-            self.direction = direction;
+        if !self.opposite_direction(direction) || self.snake_body.len() == 1{
+            self.direction.set_dir(direction);
         }
+    }
+}
+
+impl Hvdir {
+    /// Устанавливает направление движения змейки на заданное [`SnakeDirection`].
+    pub(crate) fn set_dir(&mut self, dir: SnakeDirection){
+        *self = match dir{
+            SnakeDirection::Left => Hvdir::Horizontal(-1),
+            SnakeDirection::Right => Hvdir::Horizontal(1),
+            SnakeDirection::Up => Hvdir::Vertical(-1),
+            SnakeDirection::Down => Hvdir::Vertical(1),
+        };
     }
 }

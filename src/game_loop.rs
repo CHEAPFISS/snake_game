@@ -35,16 +35,23 @@ impl GameLoop {
         while self.running {
             self.tui.draw(&mut self.game)?;
 
-            if let Ok(EventType::Key(e)) = self.event_handler.next() {
-                self.update(e)?;
+            match self.event_handler.next()?{
+                EventType::Key(e) => self.input_handler(e)?,
+                EventType::Tick => self.update()?,
+                _ => {}
             }
         }
         self.tui.exit()?;
         Ok(())
     }
 
+    fn update(&mut self) -> Result<()> {
+        self.game.snake.move_snake();
+        Ok(())
+    }
+
     /// Обновляет состояние игры в зависимости от нажатой клавиши.
-    fn update(&mut self, event: KeyEvent) -> Result<()> {
+    fn input_handler(&mut self, event: KeyEvent) -> Result<()> {
         match event.code {
             KeyCode::Char('q') | KeyCode::Esc => self.running = false,
             KeyCode::Left => self.game.snake.change_direction(SnakeDirection::Left),

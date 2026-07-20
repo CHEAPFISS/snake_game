@@ -49,9 +49,9 @@ impl Game {
             ])
             .split(Rect::from(terminal_size));
 
-        if let Some(SnakeParts::Head(_, coords)) = snake.snake_body.front_mut(){
-            coords.0 = chunks[1].width as i32 / 2;
-            coords.1 = chunks[1].height as i32 / 2;
+        if let Some(SnakeParts::Head(x, y)) = snake.snake_body.front_mut() {
+            *x = chunks[1].width as i32 / 2;
+            *y = chunks[1].height as i32 / 2;
         }
 
         Self {
