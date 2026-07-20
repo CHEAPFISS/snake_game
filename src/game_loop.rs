@@ -46,7 +46,7 @@ impl GameLoop {
     }
 
     fn update(&mut self) -> Result<()> {
-
+        self.game.snake.move_snake();
         Ok(())
     }
 
@@ -54,10 +54,10 @@ impl GameLoop {
     fn input_handler(&mut self, event: KeyEvent) -> Result<()> {
         match event.code {
             KeyCode::Char('q') | KeyCode::Esc => self.running = false,
-            KeyCode::Left => self.game.snake.change_direction(SnakeDirection::Left(-1)),
-            KeyCode::Right => self.game.snake.change_direction(SnakeDirection::Right(1)),
-            KeyCode::Up => self.game.snake.change_direction(SnakeDirection::Up(1)),
-            KeyCode::Down => self.game.snake.change_direction(SnakeDirection::Down(-1)),
+            KeyCode::Left => self.game.snake.change_direction(SnakeDirection::Left),
+            KeyCode::Right => self.game.snake.change_direction(SnakeDirection::Right),
+            KeyCode::Up => self.game.snake.change_direction(SnakeDirection::Up),
+            KeyCode::Down => self.game.snake.change_direction(SnakeDirection::Down),
             _ => {}
         }
         Ok(())
