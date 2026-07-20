@@ -93,7 +93,7 @@ impl Snake {
         Self::new('@', '-', '*')
     }
     /// Возвращает позицию головы змейки.
-    pub(crate) fn _get_head_pos(&self) -> (i32, i32) {
+    pub(crate) fn get_head_pos(&self) -> (i32, i32) {
         match self.snake_body.front(){
             Some(SnakeParts::Head(x, y)) => (*x, *y),
             _ => panic!("error: first must be head!"),

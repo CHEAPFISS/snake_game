@@ -7,7 +7,6 @@
 pub(crate) mod snake;
 pub(crate) mod render;
 pub(crate) mod info;
-
 use snake::Snake;
 use ratatui::prelude::*;
 use crate::ui;
@@ -27,6 +26,15 @@ pub struct Game {
     pub name: String,
     /// Экземпляр [`Snake`].
     pub snake: Snake,
+    ///Нынешнее состояние игры
+    pub game_state: GameState
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum GameState {
+    Runnning,
+    GameOver,
+    Pause
 }
 
 impl Game {
@@ -48,6 +56,7 @@ impl Game {
         }
 
         Self {
+            game_state: GameState::Runnning,
             game_area: chunks[1],
             _score: 0,
             name,
@@ -57,4 +66,16 @@ impl Game {
     pub(crate) fn resize_game_area(&mut self, ui_game_area: Rect) {
         self.game_area = ui_game_area;
     }
+    pub fn snake_death(&mut self) {
+        let (x, y) = self.snake.get_head_pos();
+        if !(0..self.game_area.width as i32).contains(&x) ||
+        !(0..self.game_area.height as i32).contains(&y) {
+            self.game_state = GameState::GameOver;
+        }
+    }
+    pub fn is_game_over(&self) -> bool {
+        self.game_state == GameState::GameOver
+    }
+
+
 }

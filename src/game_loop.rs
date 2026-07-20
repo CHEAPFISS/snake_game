@@ -3,6 +3,7 @@
 //! Имеет в себе функции для запуска и создание игрового цикла.
 
 use crate::event::{Event as EventType, EventHandler};
+use crate::game::GameState;
 use crate::game::{Game, snake::SnakeDirection};
 use crate::tui::Tui;
 use color_eyre::eyre::Result;
@@ -14,7 +15,6 @@ use crate::ui;
 /// Структура имеющая в себе все что нужно для управления игровым циклом.
 pub struct GameLoop {
     game: Game,
-    running: bool,
     event_handler: EventHandler,
     tui: Tui,
 }
@@ -24,7 +24,6 @@ impl GameLoop {
     pub fn new(game: Game, event_handler: EventHandler, tui: Tui) -> Self {
         Self {
             game,
-            running: true,
             event_handler,
             tui,
         }
@@ -34,7 +33,7 @@ impl GameLoop {
     pub fn run(&mut self) -> Result<()> {
         self.tui.enter()?;
 
-        while self.running {
+        while !self.game.is_game_over() {
             self.tui.draw(&mut self.game)?;
 
             match self.event_handler.next()?{
@@ -53,13 +52,14 @@ impl GameLoop {
 
     fn update(&mut self) -> Result<()> {
         self.game.snake.move_snake();
+        self.game.snake_death();
         Ok(())
     }
 
     /// Обновляет состояние игры в зависимости от нажатой клавиши.
     fn input_handler(&mut self, event: KeyEvent) -> Result<()> {
         match event.code {
-            KeyCode::Char('q') | KeyCode::Esc => self.running = false,
+            KeyCode::Char('q') | KeyCode::Esc => self.game.game_state = GameState::GameOver, //TODO Сделать паузу и меню выбора
             KeyCode::Left => self.game.snake.change_direction(SnakeDirection::Left),
             KeyCode::Right => self.game.snake.change_direction(SnakeDirection::Right),
             KeyCode::Up => self.game.snake.change_direction(SnakeDirection::Up),
