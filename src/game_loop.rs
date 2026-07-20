@@ -9,6 +9,7 @@ use color_eyre::eyre::Result;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
 
+/// Структура имеющая в себе все что нужно для управления игровым циклом.
 pub struct GameLoop {
     game: Game,
     running: bool,
@@ -17,7 +18,7 @@ pub struct GameLoop {
 }
 
 impl GameLoop {
-
+    /// Создает новый экземпляр [`GameLoop`].
     pub fn new(game: Game, event_handler: EventHandler, tui: Tui) -> Self {
         Self {
             game,
@@ -27,6 +28,7 @@ impl GameLoop {
         }
     }
 
+    /// Запускает игровой цикл.
     pub fn run(&mut self) -> Result<()> {
         self.tui.enter()?;
 
@@ -41,6 +43,7 @@ impl GameLoop {
         Ok(())
     }
 
+    /// Обновляет состояние игры в зависимости от нажатой клавиши.
     fn update(&mut self, event: KeyEvent) -> Result<()> {
         match event.code {
             KeyCode::Char('q') | KeyCode::Esc => self.running = false,
