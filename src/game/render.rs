@@ -11,6 +11,8 @@ impl Widget for &Snake {
                 continue;
             }
 
+            let symbol = self.symbols[&symbol];
+
             let screen_x = area.x + x as u16;
             let screen_y = area.y + y as u16;
 

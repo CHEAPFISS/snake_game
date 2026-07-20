@@ -19,8 +19,15 @@ use std::{collections::{HashMap, VecDeque}};
 /// Структура [`Snake`] представляет собой змейку в игре.
 pub struct Snake {
     pub(crate) snake_body: VecDeque<SnakeParts>,
-    symbols: HashMap<SnakeSymbols, char>, //TODO
-    direction: SnakeDirection,
+    pub(crate) symbols: HashMap<SnakeSymbols, char>, //TODO
+    direction: Hvdir,
+}
+
+/// Хранит направление движения змейки как горизонтальное или вертикальное направление.
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub(crate) enum Hvdir {
+    Horizontal(i8),
+    Vertical(i8),
 }
 /// Хранит перечесление для ключей в HashMap
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
@@ -79,13 +86,13 @@ impl Snake {
         }
     }
 
-    pub(crate) fn iter_parts(&self) -> impl Iterator<Item = (char, (i32, i32))> + '_ {
+    pub(crate) fn iter_parts(&self) -> impl Iterator<Item = (SnakeSymbols, (i32, i32))> + '_ {
         let symbols = &self.symbols;
         self.snake_body.iter().map(|part|{
             match part {
-                SnakeParts::Head(x, y) => (symbols[&SnakeSymbols::Head], (*x, *y)),
-                SnakeParts::Body(x, y) => (symbols[&SnakeSymbols::Body], (*x, *y)),
-                SnakeParts::Tail(x, y) => (symbols[&SnakeSymbols::Tail], (*x, *y)),
+                SnakeParts::Head(x, y) => (SnakeSymbols::Head, (*x, *y)),
+                SnakeParts::Body(x, y) => (SnakeSymbols::Body, (*x, *y)),
+                SnakeParts::Tail(x, y) => (SnakeSymbols::Tail, (*x, *y)),
             }
         })
     }
