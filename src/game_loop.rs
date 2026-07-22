@@ -2,7 +2,7 @@
 //!
 //! Имеет в себе функции для запуска и создание игрового цикла.
 
-use crate::event::{Event as EventType, EventHandler};
+use crate::event::{Event, EventHandler};
 use crate::game::GameState;
 use crate::game::{Game, snake::SnakeDirection};
 use crate::tui::Tui;
@@ -33,15 +33,27 @@ impl GameLoop {
     pub fn run(&mut self) -> Result<()> {
         self.tui.enter()?;
 
-        while !self.game.is_game_over() {
+        while !self.game.app_quit() {
             self.tui.draw(&mut self.game)?;
 
-            match self.event_handler.next()?{
-                EventType::Key(e) => self.input_handler(e)?,
-                EventType::Tick => self.update()?,
-                EventType::Resize(w, h) =>{
-                    let chunks = ui::get_chunks(Rect::from(Size::new(w, h)));
-                    self.game.resize_game_area(chunks[1]);
+            let event = self.event_handler.next()?;
+
+            match self.game.game_state {
+                GameState::GameOver | GameState::Pause => {
+                    if let Event::Key(e) = event {
+
+                    }
+                },
+                GameState::Runnning => {
+                    match event {
+                        Event::Key(e) => self.input_handler_game(e)?,
+                        Event::Tick => self.update()?,
+                        Event::Resize(w, h) =>{
+                            let chunks = ui::get_chunks(Rect::from(Size::new(w, h)));
+                            self.game.resize_game_area(chunks[1]);
+                        }
+                        _ => {}
+                    }
                 }
                 _ => {}
             }
@@ -57,9 +69,9 @@ impl GameLoop {
     }
 
     /// Обновляет состояние игры в зависимости от нажатой клавиши.
-    fn input_handler(&mut self, event: KeyEvent) -> Result<()> {
+    fn input_handler_game(&mut self, event: KeyEvent) -> Result<()> {
         match event.code {
-            KeyCode::Char('q') | KeyCode::Esc => self.game.game_state = GameState::GameOver, //TODO Сделать паузу и меню выбора
+            KeyCode::Char('q') | KeyCode::Esc => self.game.game_state = GameState::Pause, //TODO Сделать паузу и меню выбора
             KeyCode::Left => self.game.snake.change_direction(SnakeDirection::Left),
             KeyCode::Right => self.game.snake.change_direction(SnakeDirection::Right),
             KeyCode::Up => self.game.snake.change_direction(SnakeDirection::Up),
@@ -68,4 +80,13 @@ impl GameLoop {
         }
         Ok(())
     }
+    fn input_handler_pause(&mut self, event: KeyEvent) -> Result<()> {
+        match event.code {
+
+            _ => {}
+        }
+        Ok(())
+    }
+
+
 }

@@ -19,7 +19,7 @@ use std::{collections::{HashMap, VecDeque}};
 /// Структура [`Snake`] представляет собой змейку в игре.
 pub struct Snake {
     pub(crate) snake_body: VecDeque<SnakeParts>,
-    pub(crate) symbols: HashMap<SnakeSymbols, char>, //TODO
+    pub(crate) symbols: HashMap<SnakeSymbols, char>,
     direction: Hvdir,
 }
 

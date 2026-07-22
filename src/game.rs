@@ -34,7 +34,8 @@ pub struct Game {
 pub enum GameState {
     Runnning,
     GameOver,
-    Pause
+    Pause,
+    AppQuit
 }
 
 impl Game {
@@ -73,8 +74,8 @@ impl Game {
             self.game_state = GameState::GameOver;
         }
     }
-    pub fn is_game_over(&self) -> bool {
-        self.game_state == GameState::GameOver
+    pub fn app_quit(&self) -> bool {
+        self.game_state == GameState::AppQuit
     }
 
 

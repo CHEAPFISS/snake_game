@@ -1,6 +1,6 @@
 //! # UI (User Interface) для игры в змейку.
 
-use std::{fmt::Alignment::Left, vec};
+use std::vec;
 
 use crate::{prelude::Game, ui};
 
