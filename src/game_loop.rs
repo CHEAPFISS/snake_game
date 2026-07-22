@@ -80,13 +80,12 @@ impl GameLoop {
         }
         Ok(())
     }
-    fn input_handler_pause(&mut self, event: KeyEvent) -> Result<()> {
-        match event.code {
+    // fn input_handler_pause(&mut self, event: KeyEvent) -> Result<()> { TODO
+    //     match event.code {
 
-            _ => {}
-        }
-        Ok(())
-    }
+    //     }
+    //     Ok(())
+    // }
 
 
 }
