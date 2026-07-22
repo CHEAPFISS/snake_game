@@ -7,10 +7,9 @@
 pub(crate) mod snake;
 pub(crate) mod render;
 pub(crate) mod info;
-
 use snake::Snake;
 use ratatui::prelude::*;
-
+use crate::ui;
 use snake::SnakeParts;
 
 
@@ -27,6 +26,16 @@ pub struct Game {
     pub name: String,
     /// Экземпляр [`Snake`].
     pub snake: Snake,
+    ///Нынешнее состояние игры
+    pub game_state: GameState
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum GameState {
+    Runnning,
+    GameOver,
+    Pause,
+    AppQuit
 }
 
 impl Game {
@@ -40,14 +49,7 @@ impl Game {
     ///
     /// Новый экземпляр [`Game`].
     pub fn new(terminal_size: Size, mut snake: Snake, name: String) -> Self {
-        let chunks = Layout::default()
-            .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Min(5),
-                Constraint::Percentage(100),
-                Constraint::Min(5),
-            ])
-            .split(Rect::from(terminal_size));
+        let chunks = ui::get_chunks(Rect::from(terminal_size));
 
         if let Some(SnakeParts::Head(x, y)) = snake.snake_body.front_mut() {
             *x = chunks[1].width as i32 / 2;
@@ -55,10 +57,26 @@ impl Game {
         }
 
         Self {
+            game_state: GameState::Runnning,
             game_area: chunks[1],
             _score: 0,
             name,
             snake,
         }
     }
+    pub(crate) fn resize_game_area(&mut self, ui_game_area: Rect) {
+        self.game_area = ui_game_area;
+    }
+    pub fn snake_death(&mut self) {
+        let (x, y) = self.snake.get_head_pos();
+        if !(1..(self.game_area.width - 1) as i32).contains(&x) ||
+        !(1..(self.game_area.height - 1) as i32).contains(&y) {
+            self.game_state = GameState::GameOver;
+        }
+    }
+    pub fn app_quit(&self) -> bool {
+        self.game_state == GameState::AppQuit
+    }
+
+
 }
