@@ -7,6 +7,7 @@
 pub(crate) mod snake;
 pub(crate) mod render;
 pub(crate) mod info;
+pub(crate) mod menu;
 use snake::Snake;
 use ratatui::prelude::*;
 use crate::ui;

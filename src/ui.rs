@@ -29,7 +29,7 @@ pub(crate) fn render(game: &mut Game, frame: &mut Frame) {
             [
                 Constraint::Percentage(33),
                 Constraint::Percentage(33),
-                Constraint::Percentage(33),
+                Constraint::Min(25),
             ]
         )
         .split(chunks[0]);
@@ -86,7 +86,6 @@ pub(crate) fn render(game: &mut Game, frame: &mut Frame) {
                 )
                 ),
         info_area[2]);
-
 
 
 }

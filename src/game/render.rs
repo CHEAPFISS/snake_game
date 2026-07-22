@@ -1,8 +1,9 @@
 //! # Модуль для реализации trait'а [`Widget`] для модулей от модуля `game`
 
-
+use super::menu::Menu;
 use super::snake::Snake;
 use ratatui::prelude::Widget;
+use ratatui::style::Color;
 
 impl Widget for &Snake {
     fn render(self, area: ratatui::prelude::Rect, buf: &mut ratatui::prelude::Buffer) {
