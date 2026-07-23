@@ -83,9 +83,31 @@ impl GameLoop {
     // fn input_handler_pause(&mut self, event: KeyEvent) -> Result<()> { TODO
     //     match event.code {
 
-    //     }
-    //     Ok(())
-    // }
+        let Some(menu) = self.game.menus.get_mut(&self.game.game_state) else {
+                return Ok(());
+            };
+
+        if menu.items.is_empty() {
+            return Ok(());
+        }
+
+        let len = menu.items.len();
+
+        match event.code {
+            KeyCode::Left => menu.selected = if menu.selected == 0{len - 1} else {menu.selected - 1},
+            KeyCode::Right => menu.selected = (menu.selected + 1) % menu.items.len(),
+            KeyCode::Enter => {
+                let action = menu.execute();
+                match action {
+                    MenuAction::Resume => self.game.game_state = GameState::Running,
+                    MenuAction::Restart => {todo!()},
+                    MenuAction::Quit => self.game.game_state = GameState::AppQuit,
+                }
+            },
+            _ => {}
+        }
+        Ok(())
+    }
 
 
 }
