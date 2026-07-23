@@ -1,7 +1,7 @@
 //! # Game Loop для игры в змейку.
 //!
 //! Имеет в себе функции для запуска и создание игрового цикла.
-
+use crate::game::menu::MenuAction;
 use crate::event::{Event, EventHandler};
 use crate::game::GameState;
 use crate::game::{Game, snake::SnakeDirection};
@@ -36,15 +36,17 @@ impl GameLoop {
         while !self.game.app_quit() {
             self.tui.draw(&mut self.game)?;
 
+            let game_state = &self.game.game_state;
+
             let event = self.event_handler.next()?;
 
-            match self.game.game_state {
+            match game_state {
                 GameState::GameOver | GameState::Pause => {
                     if let Event::Key(e) = event {
-
+                        self.input_handler_menu(e)?;
                     }
                 },
-                GameState::Runnning => {
+                GameState::Running => {
                     match event {
                         Event::Key(e) => self.input_handler_game(e)?,
                         Event::Tick => self.update()?,
@@ -71,7 +73,7 @@ impl GameLoop {
     /// Обновляет состояние игры в зависимости от нажатой клавиши.
     fn input_handler_game(&mut self, event: KeyEvent) -> Result<()> {
         match event.code {
-            KeyCode::Char('q') | KeyCode::Esc => self.game.game_state = GameState::Pause, //TODO Сделать паузу и меню выбора
+            KeyCode::Char('q') | KeyCode::Esc => self.game.game_state = GameState::Pause,
             KeyCode::Left => self.game.snake.change_direction(SnakeDirection::Left),
             KeyCode::Right => self.game.snake.change_direction(SnakeDirection::Right),
             KeyCode::Up => self.game.snake.change_direction(SnakeDirection::Up),
@@ -80,8 +82,7 @@ impl GameLoop {
         }
         Ok(())
     }
-    // fn input_handler_pause(&mut self, event: KeyEvent) -> Result<()> { TODO
-    //     match event.code {
+    fn input_handler_menu(&mut self, event: KeyEvent) -> Result<()> {
 
         let Some(menu) = self.game.menus.get_mut(&self.game.game_state) else {
                 return Ok(());

@@ -8,12 +8,12 @@ pub(crate) mod snake;
 pub(crate) mod render;
 pub(crate) mod info;
 pub(crate) mod menu;
+
 use snake::Snake;
 use ratatui::prelude::*;
-use crate::ui;
+use crate::{game::menu::Menu, ui};
 use snake::SnakeParts;
-
-
+use std::collections::HashMap;
 
 /// Структура, представляющая игру.
 ///
@@ -28,12 +28,15 @@ pub struct Game {
     /// Экземпляр [`Snake`].
     pub snake: Snake,
     ///Нынешнее состояние игры
-    pub game_state: GameState
+    pub(crate) game_state: GameState,
+    /// Меню игры.
+    pub menus: HashMap<GameState, Menu>,
+
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum GameState {
-    Runnning,
+    Running,
     GameOver,
     Pause,
     AppQuit
@@ -49,7 +52,7 @@ impl Game {
     /// # Returns
     ///
     /// Новый экземпляр [`Game`].
-    pub fn new(terminal_size: Size, mut snake: Snake, name: String) -> Self {
+    pub fn new(terminal_size: Size, mut snake: Snake, name: String, menus: HashMap<GameState, Menu>) -> Self {
         let chunks = ui::get_chunks(Rect::from(terminal_size));
 
         if let Some(SnakeParts::Head(x, y)) = snake.snake_body.front_mut() {
@@ -58,11 +61,12 @@ impl Game {
         }
 
         Self {
-            game_state: GameState::Runnning,
+            game_state: GameState::Running,
             game_area: chunks[1],
             _score: 0,
             name,
             snake,
+            menus
         }
     }
     pub(crate) fn resize_game_area(&mut self, ui_game_area: Rect) {
