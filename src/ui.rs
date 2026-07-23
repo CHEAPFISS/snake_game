@@ -2,9 +2,12 @@
 
 use std::vec;
 
-use crate::{prelude::Game, ui};
+use crate::{Item, Menu, game::GameState, prelude::Game, ui};
 
-use ratatui::{prelude::*, text::ToLine, widgets::{Block, BorderType, Paragraph}};
+use ratatui_core::layout::{Layout, Flex};
+use ratatui::prelude::*;
+use ratatui::text::ToLine;
+use ratatui::widgets::{Block, BorderType, Clear, Paragraph};
 
 pub(crate) fn get_chunks(size: Rect) -> [Rect; 3] {
     let chunks = Layout::default()
