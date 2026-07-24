@@ -1346,6 +1346,7 @@ dependencies = [
  "color-eyre",
  "crossterm",
  "ratatui",
+ "ratatui-core",
  "serde_json",
 ]
 

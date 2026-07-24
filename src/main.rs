@@ -1,6 +1,7 @@
 use color_eyre::eyre::Result;
-use snake_game_teaching::{EventHandler, Game, GameLoop, Snake, Tui};
+use snake_game_teaching::prelude::*;
 use std::io::stderr;
+use std::collections::HashMap;
 
 use ratatui::Terminal;
 
@@ -12,10 +13,18 @@ fn main() -> Result<(), color_eyre::eyre::Report> {
 
     let term_size = terminal.size()?;
 
+    let pause_menu = Menu::default("PAUSE");
+    let game_over = Menu::new("GAME OVER", {
+        vec![Item::restart(), Item::quit()]
+    });
     let game = Game::new(
         term_size,
         Snake::default_snake(),
         String::from("Snake Game"),
+        HashMap::from([
+            (GameState::Pause, pause_menu),
+            (GameState::GameOver, game_over),
+        ]),
     );
 
 
