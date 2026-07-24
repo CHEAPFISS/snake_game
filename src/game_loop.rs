@@ -31,8 +31,9 @@ impl GameLoop {
 
     /// Запускает игровой цикл.
     pub fn run(&mut self) -> Result<()> {
+        // Входит в режим raw
         self.tui.enter()?;
-
+        // Основной игровой цикл
         while !self.game.app_quit() {
             self.tui.draw(&mut self.game)?;
 
@@ -63,7 +64,7 @@ impl GameLoop {
         self.tui.exit()?;
         Ok(())
     }
-
+    /// Главная функция обновления игры.
     fn update(&mut self) -> Result<()> {
         self.game.snake.move_snake();
         self.game.snake_death();
@@ -82,6 +83,12 @@ impl GameLoop {
         }
         Ok(())
     }
+
+    /// Обрабатывает ввод в меню.
+    ///
+    /// #Errors
+    ///
+    /// Возвращает ошибку, если меню не найдено.
     fn input_handler_menu(&mut self, event: KeyEvent) -> Result<()> {
 
         let Some(menu) = self.game.menus.get_mut(&self.game.game_state) else {
@@ -109,6 +116,4 @@ impl GameLoop {
         }
         Ok(())
     }
-
-
 }

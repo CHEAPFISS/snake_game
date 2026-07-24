@@ -9,6 +9,7 @@ use ratatui::prelude::*;
 use ratatui::text::ToLine;
 use ratatui::widgets::{Block, BorderType, Clear, Paragraph};
 
+/// Делит экран на три части: верхнюю, центральную и нижнюю.
 pub(crate) fn get_chunks(size: Rect) -> [Rect; 3] {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
@@ -24,8 +25,9 @@ pub(crate) fn get_chunks(size: Rect) -> [Rect; 3] {
 
 pub(crate) fn render(game: &mut Game, frame: &mut Frame) {
 
-    let chunks = ui::get_chunks(frame.area());
+    let chunks = ui::get_chunks(frame.area()); // получаем зоны для отрисовки игры
 
+    // делим верхнюю часть экрана на три части
     let info_area = Layout::default()
         .direction(Direction::Horizontal)
         .constraints(
@@ -37,7 +39,7 @@ pub(crate) fn render(game: &mut Game, frame: &mut Frame) {
         )
         .split(chunks[0]);
 
-
+    // рендерим зону игры
     frame.render_widget(Block::bordered()
         .border_style(Style::new().fg(Color::Cyan))
         .border_type(BorderType::Double)
@@ -48,8 +50,11 @@ pub(crate) fn render(game: &mut Game, frame: &mut Frame) {
         .title_alignment(Alignment::Center)
         , chunks[1]);
 
+    // рендерим змейку как виджет
     frame.render_widget(&game.snake, chunks[1]);
 
+
+    // получаем координаты головы змейки и закидываем их в вектор из линий для отрисовки
     let coord = vec![
         Line::from(
             format!(
@@ -68,6 +73,7 @@ pub(crate) fn render(game: &mut Game, frame: &mut Frame) {
         ),
     ];
 
+    // рендерим координаты головы змейки и размеры игровой зоны
     frame.render_widget(
         Paragraph::new(coord)
             .add_modifier(Modifier::BOLD)
@@ -94,6 +100,8 @@ pub(crate) fn render(game: &mut Game, frame: &mut Frame) {
         render_popup_block(frame, &game.menus[&GameState::Pause], &chunks[1]);
     }
 
+
+
 }
 
 fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
@@ -118,6 +126,7 @@ fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
         .split(popup_layout[1])[1] // Return the middle chunk
 }
 
+/// Функция для полученя ректов для кнопок меню в зависимости от размеров окна и кол-ва кнопок
 fn menu_buttons_place_rect(chunk: Rect, items: &[Item]) -> Vec<Rect> {
     let rect = Layout::default()
         .direction(Direction::Horizontal)
@@ -130,10 +139,12 @@ fn menu_buttons_place_rect(chunk: Rect, items: &[Item]) -> Vec<Rect> {
         .split(chunk);
     rect.to_vec()
 }
-
+/// Функция для отрисовки всплывающего окна
 fn render_popup_block(frame: &mut Frame, menu: &Menu, chunk: &Rect){
+    // Получаем рект окна всплывающего блока
     let popup_area = centered_rect(40, 30, *chunk);
 
+    // делим его на место для кнопок и пустоту (TODO для кастомного текста)
     let popup_chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
@@ -142,9 +153,10 @@ fn render_popup_block(frame: &mut Frame, menu: &Menu, chunk: &Rect){
         ])
         .split(popup_area);
 
-
+    // Чистим поле за блоком для эффекта окна
     frame.render_widget(Clear, popup_area);
 
+    // Создаем сам блок всплывающего окна
     let popup_block = Block::bordered()
         .border_style(Style::new()
             .fg(Color::Cyan))
@@ -155,12 +167,13 @@ fn render_popup_block(frame: &mut Frame, menu: &Menu, chunk: &Rect){
                 Style::new()
                     .add_modifier(Modifier::BOLD)
                     .fg(Color::LightBlue)));
-
+    // Рисуем его
     frame.render_widget(popup_block, popup_area);
 
-
+    // Создаем ректы для кнопок
     let buttons_chunk = menu_buttons_place_rect(popup_chunks[1], &menu.items);
 
+    // Рисуем кнопки
     for (index, item) in menu.items.iter().enumerate() {
         let style = if index == menu.selected {
             Style::new().fg(Color::DarkGray).bg(Color::Yellow)
@@ -168,7 +181,7 @@ fn render_popup_block(frame: &mut Frame, menu: &Menu, chunk: &Rect){
             Style::new().fg(Color::Gray)
         };
 
-
+        // Используем `Span` чтоб был правильно выравнен текст, но при этом не заливался весь блок текста
         let text = Span::from(item.name.as_str())
             .style(style);
 
@@ -178,7 +191,4 @@ fn render_popup_block(frame: &mut Frame, menu: &Menu, chunk: &Rect){
             buttons_chunk[index]
         );
     }
-
-
-
 }

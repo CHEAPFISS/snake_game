@@ -72,14 +72,14 @@ impl Game {
     pub(crate) fn resize_game_area(&mut self, ui_game_area: Rect) {
         self.game_area = ui_game_area;
     }
-    pub fn snake_death(&mut self) {
+    pub(crate) fn snake_death(&mut self) {
         let (x, y) = self.snake.get_head_pos();
         if !(1..(self.game_area.width - 1) as i32).contains(&x) ||
         !(1..(self.game_area.height - 1) as i32).contains(&y) {
             self.game_state = GameState::GameOver;
         }
     }
-    pub fn app_quit(&self) -> bool {
+    pub(crate) fn app_quit(&self) -> bool {
         self.game_state == GameState::AppQuit
     }
 
