@@ -95,9 +95,9 @@ pub(crate) fn render(game: &mut Game, frame: &mut Frame) {
                 )
                 ),
         info_area[2]);
-
-    if game.game_state == GameState::Pause{
-        render_popup_block(frame, &game.menus[&GameState::Pause], &chunks[1]);
+    // ре
+    if game.game_state != GameState::Running{
+        render_popup_block(frame, &game.menus[&game.game_state], &chunks[1]);
     }
 
 
