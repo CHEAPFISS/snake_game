@@ -108,7 +108,7 @@ impl GameLoop {
                 let action = menu.execute();
                 match action {
                     MenuAction::Resume => self.game.game_state = GameState::Running,
-                    MenuAction::Restart => {todo!()},
+                    MenuAction::Restart => self.game.restart(),
                     MenuAction::Quit => self.game.game_state = GameState::AppQuit,
                 }
             },

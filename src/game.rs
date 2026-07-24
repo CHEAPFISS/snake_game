@@ -47,7 +47,7 @@ impl Game {
     ///
     /// Требует размер открытого терминала типа [`Size`], экземпляр [`Snake`] и название игры типа [`String`].
     ///
-    /// Кроме создания экземпляра [`Game`], `new` ставит голову [`Snake`] в центре `game_area`.
+    /// Кроме создания экземпляра [`Game`], `new` ставит голову [`Snake`] в центр `game_area`.
     ///
     /// # Returns
     ///
@@ -55,10 +55,7 @@ impl Game {
     pub fn new(terminal_size: Size, mut snake: Snake, name: String, menus: HashMap<GameState, Menu>) -> Self {
         let chunks = ui::get_chunks(Rect::from(terminal_size));
 
-        if let Some(SnakeParts::Head(x, y)) = snake.snake_body.front_mut() {
-            *x = chunks[1].width as i32 / 2;
-            *y = chunks[1].height as i32 / 2;
-        }
+        center_snake(&mut snake, &chunks[1]);
 
         Self {
             game_state: GameState::Running,
@@ -83,5 +80,17 @@ impl Game {
         self.game_state == GameState::AppQuit
     }
 
+    pub fn restart(&mut self){
+        self.snake = Snake::default_snake();
+        center_snake(&mut self.snake, &self.game_area);
+        self.game_state = GameState::Running;
+    }
 
+}
+
+fn center_snake(snake: &mut Snake, game_area: &Rect) {
+    if let Some(SnakeParts::Head(x, y)) = snake.snake_body.front_mut() {
+        *x = game_area.width as i32 / 2;
+        *y = game_area.height as i32 / 2;
+    }
 }
