@@ -14,8 +14,6 @@ use ratatui::crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEv
 /// Перечисление событий, которые могут быть обработаны.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Event {
-    /// Apple event
-    Apple,
     /// Terminal tick
     Tick,
     /// Mouse event

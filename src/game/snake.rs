@@ -34,13 +34,11 @@ pub(crate) enum Hvdir {
 pub(crate) enum SnakeSymbols {
     Head,
     Body,
-    Tail,
 }
 /// Хранит перечесления для хранения частей тела в VecDeque<T>
 pub(crate) enum SnakeParts {
     Head(i32, i32),
     _Body(i32, i32),
-    _Tail(i32, i32),
 }
 
 /// Хранит перечесления определения направления движения змейки
@@ -54,13 +52,12 @@ pub(crate) enum SnakeDirection {
 
 impl Snake {
     /// Создает новый экземпляр змейки с заданными символами головы, тела и хвоста. Ставит напрвление `Right`.
-    pub fn new(snake_head_symbol: char, snake_body_symbol: char, snake_tail_symbol: char) -> Self {
+    pub fn new(snake_head_symbol: char, snake_body_symbol: char) -> Self {
         let mut snake_body = VecDeque::new();
         snake_body.push_front(SnakeParts::Head(0,0));
         let mut symbols = HashMap::new();
         symbols.insert(SnakeSymbols::Head, snake_head_symbol);
         symbols.insert(SnakeSymbols::Body, snake_body_symbol);
-        symbols.insert(SnakeSymbols::Tail, snake_tail_symbol);
 
         Self {
             snake_body,
@@ -80,7 +77,7 @@ impl Snake {
                         *y += v as i32;
                     }
                 }
-                SnakeParts::_Body(_x, _y) | SnakeParts::_Tail(_x, _y) => {
+                SnakeParts::_Body(_x, _y) => {
 
                 }
             }
@@ -90,7 +87,7 @@ impl Snake {
 
     /// Возвращает новый экземпляр змейки с символами по умолчанию ('@', '-', '*').
     pub fn default_snake() -> Self {
-        Self::new('@', '-', '*')
+        Self::new('@', '-')
     }
     /// Возвращает позицию головы змейки.
     pub(crate) fn get_head_pos(&self) -> (i32, i32) {
@@ -105,7 +102,6 @@ impl Snake {
             match part {
                 SnakeParts::Head(x, y) => (SnakeSymbols::Head, (*x, *y)),
                 SnakeParts::_Body(x, y) => (SnakeSymbols::Body, (*x, *y)),
-                SnakeParts::_Tail(x, y) => (SnakeSymbols::Tail, (*x, *y)),
             }
         })
     }

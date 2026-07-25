@@ -4,6 +4,7 @@
 //!
 //! Требуется ТОЛЬКО для создания, хранения и чтения данных игры.
 
+pub(crate) mod apple;
 pub(crate) mod snake;
 pub(crate) mod render;
 pub(crate) mod info;
