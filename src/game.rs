@@ -12,7 +12,7 @@ pub(crate) mod menu;
 
 use snake::Snake;
 use ratatui::prelude::*;
-use crate::{game::menu::Menu, ui};
+use crate::{game::{apple::Apple, menu::Menu}, ui};
 use snake::SnakeParts;
 use std::collections::HashMap;
 
@@ -32,6 +32,8 @@ pub struct Game {
     pub(crate) game_state: GameState,
     /// Меню игры.
     pub menus: HashMap<GameState, Menu>,
+    /// Вектор всех яблок на поле
+    pub apples: HashMap<(u32, u32), Apple>,
 
 }
 
