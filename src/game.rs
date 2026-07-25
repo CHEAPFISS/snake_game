@@ -61,6 +61,7 @@ impl Game {
         center_snake(&mut snake, &chunks[1]);
 
         Self {
+            apples: HashMap::new(),
             game_state: GameState::Running,
             game_area: chunks[1],
             _score: 0,
